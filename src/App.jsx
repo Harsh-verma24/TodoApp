@@ -12,7 +12,7 @@ const App = () => {
   ]);
   return (
     <Provider store={store}>
-      <div>
+      <div className="bg-[#1f2027] h-screen">
         <RouterProvider router={router} />
       </div>
       <Toaster />

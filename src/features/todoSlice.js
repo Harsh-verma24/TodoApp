@@ -5,7 +5,7 @@ const initialState = {
   todos: [],
   content: "",
   _id: "",
-  status:"not-completed"
+  status: true,
 };
 
 const todoSlice = createSlice({
@@ -17,32 +17,37 @@ const todoSlice = createSlice({
       const newTodo = {
         _id: todo._id,
         content: todo.content,
-        status:"not-completed"
+        status: false,
       };
       state.todos.push(newTodo);
       localStorage.setItem("todos", JSON.stringify(state.todos));
       toast.success("To do added successfully");
     },
     deleteTodo: (state, action) => {
-        const todoId=action.payload
-        const index= state.todos.findIndex((p)=>p._id===todoId)
-        if(index>=0){
-            state.todos.splice(index,1);
-            localStorage.setItem("todos",JSON.stringify(state.todos))
-            toast.success("todo deleted")
-        }
+      const todoId = action.payload;
+      const index = state.todos.findIndex((p) => p._id === todoId);
+      if (index >= 0) {
+        state.todos.splice(index, 1);
+        localStorage.setItem("todos", JSON.stringify(state.todos));
+        toast.success("todo deleted");
+      }
     },
-    completeTodo:(state,action)=>{
-        const todoId=action.payload
-        const index= state.todos.findIndex((p)=>p._id===todoId)
-        if(index>=0){
-            state.todos[index].status="completed";
-            localStorage.setItem("todos",JSON.stringify(state.todos))
-            toast.success("todo completed");
+    completeTodo: (state, action) => {
+      const todoId = action.payload;
+      const index = state.todos.findIndex((p) => p._id === todoId);
+      if (index >= 0) {
+        if (!state.todos[index].status){
+          state.todos[index].status = !state.todos[index].status;
+          toast.success("todo completed");
         }
-    }
+        else{
+           state.todos[index].status = !state.todos[index].status;
+        }
+        localStorage.setItem("todos", JSON.stringify(state.todos));
+      }
+    },
   },
 });
 
-export const { addTodo, deleteTodo,completeTodo} = todoSlice.actions;
+export const { addTodo, deleteTodo, completeTodo } = todoSlice.actions;
 export default todoSlice.reducer;
